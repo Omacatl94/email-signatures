@@ -244,8 +244,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎯 Generatore Firme Email</h1>
-            <p>Consultlario - Crea firme professionali in pochi click</p>
+            <h1>Generatore Firme Consultlario</h1>
+            <p>Crea firme email professionali per il team Consultlario</p>
         </div>
         
         <div class="content">
@@ -253,27 +253,27 @@
                 <form id="signatureForm">
                     <div class="form-group">
                         <label>Nome Completo *</label>
-                        <input type="text" id="name" required placeholder="Es: Paolo Diana">
+                        <input type="text" id="name" required placeholder="Es: Mario Rossi">
                     </div>
                     
                     <div class="form-group">
                         <label>Ruolo *</label>
-                        <input type="text" id="role" required placeholder="Es: Digital Marketing Specialist">
+                        <input type="text" id="role" required placeholder="Es: HR Manager">
                     </div>
                     
                     <div class="form-group">
                         <label>Telefono *</label>
-                        <input type="tel" id="phone" required placeholder="Es: 3204683567">
+                        <input type="tel" id="phone" required placeholder="Es: 3331234567">
                     </div>
                     
                     <div class="form-group">
                         <label>Email *</label>
-                        <input type="email" id="email" required placeholder="Es: nome@consultlario.com">
+                        <input type="email" id="email" required placeholder="Es: nome.cognome@consultlario.com">
                     </div>
                     
                     <div class="form-group">
-                        <label>Indirizzo *</label>
-                        <input type="text" id="address" required placeholder="Es: Via Giuseppe Resinelli 4, Lecco" value="Via Giuseppe Resinelli 4, Lecco">
+                        <label>Indirizzo</label>
+                        <input type="text" id="address" required readonly value="Via Giuseppe Resinelli 4, Lecco" style="background: #f5f5f5; cursor: not-allowed;">
                     </div>
                     
                     <div class="checkbox-group">
@@ -308,7 +308,7 @@
                                 <input type="checkbox" id="whatsappCheck">
                                 WhatsApp
                             </label>
-                            <input type="text" id="whatsapp" disabled placeholder="393204683567">
+                            <input type="text" id="whatsapp" disabled placeholder="Es: 3331234567">
                         </div>
                     </div>
                 </form>
@@ -330,6 +330,10 @@
                 </div>
             </div>
         </div>
+        
+        <div style="text-align: center; padding: 20px; color: white; font-size: 12px; opacity: 0.8;">
+            <p style="margin: 0;">Versione 1.0 - Sviluppato da Paolo Diana per Consultlario</p>
+        </div>
     </div>
     
     <script>
@@ -350,8 +354,8 @@
         function generateSignature() {
             const name = document.getElementById('name').value || 'Nome Cognome';
             const role = document.getElementById('role').value || 'Ruolo';
-            const phone = document.getElementById('phone').value || '1234567890';
-            const email = document.getElementById('email').value || 'email@consultlario.com';
+            const phone = document.getElementById('phone').value || '3331234567';
+            const email = document.getElementById('email').value || 'nome.cognome@consultlario.com';
             const address = document.getElementById('address').value || 'Indirizzo';
             const website = document.getElementById('website').value || 'https://consultlario.com';
             
