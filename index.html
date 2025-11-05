@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generatore Firme Email - Consultlario</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #25387c 0%, #8fbe21 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #25387c;
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            padding: 40px;
+        }
+        
+        .form-section {
+            border-right: 2px solid #f0f0f0;
+            padding-right: 40px;
+        }
+        
+        .preview-section {
+            padding-left: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #25387c;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #8fbe21;
+        }
+        
+        .form-group input:required:invalid {
+            border-color: #ff6b6b;
+        }
+        
+        .checkbox-group {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .checkbox-group h3 {
+            font-size: 16px;
+            color: #25387c;
+            margin-bottom: 15px;
+        }
+        
+        .checkbox-item {
+            margin-bottom: 15px;
+        }
+        
+        .checkbox-item label {
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 8px;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        .checkbox-item input[type="text"] {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+        
+        .checkbox-item input[type="text"]:disabled {
+            background: #f5f5f5;
+            cursor: not-allowed;
+        }
+        
+        .preview-box {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            min-height: 400px;
+        }
+        
+        .preview-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #25387c;
+            margin-bottom: 20px;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        .btn-primary {
+            background: #8fbe21;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #7aa61c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(143, 190, 33, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #25387c;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #1e2d63;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 56, 124, 0.4);
+        }
+        
+        .success-message {
+            display: none;
+            background: #8fbe21;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+        
+        .success-message.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 968px) {
+            .content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .form-section {
+                border-right: none;
+                border-bottom: 2px solid #f0f0f0;
+                padding-right: 0;
+                padding-bottom: 30px;
+            }
+            
+            .preview-section {
+                padding-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Generatore Firme Email</h1>
+            <p>Consultlario - Crea firme professionali in pochi click</p>
+        </div>
+        
+        <div class="content">
+            <div class="form-section">
+                <form id="signatureForm">
+                    <div class="form-group">
+                        <label>Nome Completo *</label>
+                        <input type="text" id="name" required placeholder="Es: Paolo Diana">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Ruolo *</label>
+                        <input type="text" id="role" required placeholder="Es: Digital Marketing Specialist">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Telefono *</label>
+                        <input type="tel" id="phone" required placeholder="Es: 3204683567">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" id="email" required placeholder="Es: nome@consultlario.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Indirizzo *</label>
+                        <input type="text" id="address" required placeholder="Es: Via Giuseppe Resinelli 4, Lecco" value="Via Giuseppe Resinelli 4, Lecco">
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <h3>Social Media (Opzionali)</h3>
+                        
+                        <div class="checkbox-item">
+                            <label>
+                                <input type="checkbox" id="websiteCheck" checked disabled>
+                                Sito Web (obbligatorio)
+                            </label>
+                            <input type="text" id="website" value="https://consultlario.com" placeholder="https://consultlario.com">
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <label>
+                                <input type="checkbox" id="facebookCheck">
+                                Facebook
+                            </label>
+                            <input type="text" id="facebook" disabled placeholder="https://www.facebook.com/username">
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <label>
+                                <input type="checkbox" id="linkedinCheck">
+                                LinkedIn
+                            </label>
+                            <input type="text" id="linkedin" disabled placeholder="https://www.linkedin.com/in/username">
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <label>
+                                <input type="checkbox" id="whatsappCheck">
+                                WhatsApp
+                            </label>
+                            <input type="text" id="whatsapp" disabled placeholder="393204683567">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="preview-section">
+                <div class="preview-title">📧 Anteprima Firma</div>
+                <div class="preview-box" id="preview">
+                    <!-- Preview will be generated here -->
+                </div>
+                
+                <div class="actions">
+                    <button class="btn btn-primary" onclick="copyHTML()">📋 Copia HTML</button>
+                    <button class="btn btn-secondary" onclick="downloadHTML()">💾 Download HTML</button>
+                </div>
+                
+                <div class="success-message" id="successMessage">
+                    ✓ HTML copiato negli appunti!
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Enable/disable social inputs based on checkbox
+        document.getElementById('facebookCheck').addEventListener('change', function() {
+            document.getElementById('facebook').disabled = !this.checked;
+        });
+        
+        document.getElementById('linkedinCheck').addEventListener('change', function() {
+            document.getElementById('linkedin').disabled = !this.checked;
+        });
+        
+        document.getElementById('whatsappCheck').addEventListener('change', function() {
+            document.getElementById('whatsapp').disabled = !this.checked;
+        });
+        
+        // Generate signature preview
+        function generateSignature() {
+            const name = document.getElementById('name').value || 'Nome Cognome';
+            const role = document.getElementById('role').value || 'Ruolo';
+            const phone = document.getElementById('phone').value || '1234567890';
+            const email = document.getElementById('email').value || 'email@consultlario.com';
+            const address = document.getElementById('address').value || 'Indirizzo';
+            const website = document.getElementById('website').value || 'https://consultlario.com';
+            
+            const facebookEnabled = document.getElementById('facebookCheck').checked;
+            const linkedinEnabled = document.getElementById('linkedinCheck').checked;
+            const whatsappEnabled = document.getElementById('whatsappCheck').checked;
+            
+            const facebook = document.getElementById('facebook').value;
+            const linkedin = document.getElementById('linkedin').value;
+            const whatsapp = document.getElementById('whatsapp').value;
+            
+            let socialIcons = '';
+            
+            // Website is always included
+            socialIcons += `
+                <td style="padding-right: 8px;">
+                    <a href="${website}" target="_blank">
+                        <img src="https://raw.githubusercontent.com/Omacatl94/email-signatures/main/website-logo.png" alt="Website" style="display: block; width: 22px; height: 22px; border: 0;" />
+                    </a>
+                </td>
+            `;
+            
+            if (facebookEnabled && facebook) {
+                socialIcons += `
+                    <td style="padding-right: 8px;">
+                        <a href="${facebook}" target="_blank">
+                            <img src="https://raw.githubusercontent.com/Omacatl94/email-signatures/main/facebook-logo.png" alt="Facebook" style="display: block; width: 22px; height: 22px; border: 0;" />
+                        </a>
+                    </td>
+                `;
+            }
+            
+            if (linkedinEnabled && linkedin) {
+                socialIcons += `
+                    <td style="padding-right: 8px;">
+                        <a href="${linkedin}" target="_blank">
+                            <img src="https://raw.githubusercontent.com/Omacatl94/email-signatures/main/linkedin-logo.png" alt="LinkedIn" style="display: block; width: 22px; height: 22px; border: 0;" />
+                        </a>
+                    </td>
+                `;
+            }
+            
+            if (whatsappEnabled && whatsapp) {
+                socialIcons += `
+                    <td>
+                        <a href="https://wa.me/${whatsapp.replace(/[^0-9]/g, '')}" target="_blank">
+                            <img src="https://raw.githubusercontent.com/Omacatl94/email-signatures/main/whatsapp-logo.png" alt="WhatsApp" style="display: block; width: 22px; height: 22px; border: 0;" />
+                        </a>
+                    </td>
+                `;
+            }
+            
+            return `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <table cellpadding="0" cellspacing="0" border="0" style="font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; font-size: 14px; line-height: 1.5; color: #333333; max-width: 500px;">
+        <!-- Logo Consultlario -->
+        <tr>
+            <td style="padding-bottom: 15px;">
+                <img src="https://raw.githubusercontent.com/Omacatl94/email-signatures/main/consultlario-logo-wide.png" alt="Consultlario" style="display: block; width: 280px; height: auto; border: 0;" />
+            </td>
+        </tr>
+        
+        <!-- Nome e Ruolo -->
+        <tr>
+            <td style="padding-bottom: 8px;">
+                <span style="font-size: 20px; font-weight: bold; color: #25387c;">${name}</span><br>
+                <span style="font-size: 13px; color: #58595b; font-weight: 600;">${role}</span>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom: 12px;">
+                <div style="height: 3px; background: linear-gradient(to right, #25387c 0%, #25387c 33.33%, #8fbe21 33.33%, #8fbe21 66.66%, #d7d7d7 66.66%, #d7d7d7 100%); font-size: 0; line-height: 0;">&nbsp;</div>
+            </td>
+        </tr>
+        
+        <!-- Info Contatto -->
+        <tr>
+            <td style="padding-top: 12px; padding-bottom: 3px;">
+                <span style="font-size: 12px; color: #555555;">M: <a href="tel:+39${phone.replace(/[^0-9]/g, '')}" style="color: #25387c; text-decoration: none;">${phone}</a></span>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom: 3px;">
+                <span style="font-size: 12px; color: #555555;">E: <a href="mailto:${email}" style="color: #25387c; text-decoration: none;">${email}</a></span>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom: 12px;">
+                <span style="font-size: 12px; color: #555555;">A: ${address}</span>
+            </td>
+        </tr>
+        
+        <!-- Social Icons -->
+        <tr>
+            <td style="padding-bottom: 15px;">
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                        ${socialIcons}
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        
+        <!-- Key Research Group -->
+        <tr>
+            <td style="padding-top: 15px;">
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                        <td style="vertical-align: middle; padding-right: 10px;">
+                            <span style="font-size: 10px; color: #888888; font-style: italic;">Part of</span>
+                        </td>
+                        <td style="vertical-align: middle;">
+                            <img src="https://raw.githubusercontent.com/Omacatl94/email-signatures/main/Key_research_group_logo.png" alt="Key Research Group" style="display: block; height: 24px; width: auto; border: 0;" />
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>`;
+        }
+        
+        // Update preview on input
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('input', updatePreview);
+        });
+        
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updatePreview);
+        });
+        
+        function updatePreview() {
+            const signatureHTML = generateSignature();
+            
+            // Estraggo solo il contenuto del body per il preview
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(signatureHTML, 'text/html');
+            const bodyContent = doc.body.innerHTML;
+            
+            document.getElementById('preview').innerHTML = bodyContent;
+        }
+        
+        // Copy HTML to clipboard
+        function copyHTML() {
+            const signatureHTML = generateSignature();
+            
+            navigator.clipboard.writeText(signatureHTML).then(() => {
+                const message = document.getElementById('successMessage');
+                message.classList.add('show');
+                
+                setTimeout(() => {
+                    message.classList.remove('show');
+                }, 3000);
+            }).catch(err => {
+                alert('Errore nel copiare il codice. Prova a usare il download.');
+            });
+        }
+        
+        // Download HTML file
+        function downloadHTML() {
+            const signatureHTML = generateSignature();
+            const name = document.getElementById('name').value.replace(/\s+/g, '-').toLowerCase() || 'firma';
+            const blob = new Blob([signatureHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `firma-${name}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        // Initialize preview
+        updatePreview();
+    </script>
+</body>
+</html>
